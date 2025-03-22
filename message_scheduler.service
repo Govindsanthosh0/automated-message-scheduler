@@ -1,0 +1,14 @@
+[Unit]
+Description=Twilio Message Scheduler
+After=network.target
+
+[Service]
+ExecStart=/home/YOUR_USERNAME/myenv/bin/python3 /home/YOUR_USERNAME/send_whatsapp_message.py
+WorkingDirectory=/home/YOUR_USERNAME/
+Restart=always
+User=YOUR_USERNAME
+Group=YOUR_USERNAME
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target
