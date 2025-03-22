@@ -1,0 +1,32 @@
+function doGet(e) {
+  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Sheet1");
+  var data = sheet.getDataRange().getValues();
+  var today = new Date();
+  var day = today.getDay(); // 3 = Wednesday, 4 = Thursday
+  
+  var nextPerson = null;
+  for (var i = 1; i < data.length; i++) {
+    var name = data[i][0];
+    var phone = data[i][1];
+    var m1Date = new Date(data[i][2]);
+    var m2Date = new Date(data[i][3]);
+    
+    if ((day === 4 && isSameDate(m1Date, today)) || (day === 3 && isSameDate(m2Date, today))) {
+      nextPerson = {
+        "name": name,
+        "phone": phone,
+        "message": (day === 4) ? "M1" : "M2"
+      };
+      break;
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify(nextPerson))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function isSameDate(date1, date2) {
+  return date1.getFullYear() === date2.getFullYear() &&
+         date1.getMonth() === date2.getMonth() &&
+         date1.getDate() === date2.getDate();
+}
